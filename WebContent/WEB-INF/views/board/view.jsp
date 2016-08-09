@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%
+	request.setCharacterEncoding("utf-8");
+	String no = request.getParameter("no");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,7 +35,8 @@
 					</tr>
 				</table>
 				<div class="bottom">
-					<a href="">글목록</a> <a href="">글수정</a>
+					<a href="/mysite/board?a=list">글목록</a> <a
+						href="/mysite/board?a=modifyform">글수정</a>
 				</div>
 			</div>
 		</div>
