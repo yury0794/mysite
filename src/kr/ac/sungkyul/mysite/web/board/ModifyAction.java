@@ -11,17 +11,23 @@ import kr.ac.sungkyul.mysite.vo.BoardVo;
 import kr.ac.sungkyul.web.Action;
 import kr.ac.sungkyul.web.WebUtil;
 
-public class ModifyFormAction implements Action {
+public class ModifyAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String no = request.getParameter("no");
+		String title = request.getParameter("title");
+		String content = request.getParameter("content");
 
+		BoardVo vo = new BoardVo();
+		vo.setNo(Long.parseLong(no));
+		vo.setTitle(title);
+		vo.setContent(content);
+		
 		BoardDao dao = new BoardDao();
-		BoardVo vo = dao.get(Long.parseLong(no));
-
-		request.setAttribute("boardVo", vo);
-				
-		WebUtil.forward("/WEB-INF/views/board/modify.jsp", request, response);
+		dao.update(vo);
+		
+		WebUtil.redirect("/mysite/board?a=modifyform&no="+no, request, response);
+		
 	}
 }

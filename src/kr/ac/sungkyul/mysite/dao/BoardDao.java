@@ -25,28 +25,35 @@ public class BoardDao {
 		}
 		return conn;
 	}
-	
-	public int view(Long no) {
+
+	public void update(BoardVo vo) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		int count = 0;
 
 		try {
 			conn = getConnection();
 
-			String sql = "select title, content from board where no = ?";
+			Long no = vo.getNo();
+			String title = vo.getTitle();
+			String content = vo.getContent();
+
+			String sql = null;
+			sql = "update board set title=?, content=? where no=?";
+
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setLong(1, no);
-
-			count = pstmt.executeUpdate(); // 완벽한 쿼리문이 아니기 때문에 괄호 안에 sql을 넣지 않는다
+			pstmt.setString(1, title);
+			pstmt.setString(2, content);
+			pstmt.setLong(3, no);
+			
+			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
-			System.out.println("에러 : " + e);
+			e.printStackTrace();
 		} finally {
 			try {
 				if (pstmt != null) {
-					pstmt.close();
+					pstmt.cancel();
 				}
 				if (conn != null) {
 					conn.close();
@@ -55,7 +62,51 @@ public class BoardDao {
 				e.printStackTrace();
 			}
 		}
-		return count;
+	}
+
+	public BoardVo get(Long boardNo) {
+		BoardVo vo = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = getConnection();
+
+			String sql = "select no, title, content from board where no = ?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setLong(1, boardNo);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				Long no = rs.getLong(1);
+				String title = rs.getString(2);
+				String content = rs.getString(3);
+
+				vo = new BoardVo();
+				vo.setNo(no);
+				vo.setTitle(title);
+				vo.setContent(content);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return vo;
 	}
 
 	public List<BoardVo> getList() {
@@ -70,8 +121,7 @@ public class BoardDao {
 			stmt = conn.createStatement();
 
 			String sql = "select a.no, a.title, b.name, a.view_count, "
-					+ "to_char(a.reg_date, 'yyyy-mm-dd pm hh:mi:ss') "
-					+ "from board a, users b where a.user_no = b.no "
+					+ "to_char(a.reg_date, 'yyyy-mm-dd pm hh:mi:ss') " + "from board a, users b where a.user_no = b.no "
 					+ "order by reg_date desc";
 
 			rs = stmt.executeQuery(sql);

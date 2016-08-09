@@ -21,6 +21,7 @@ public class LoginAction implements Action {
 
 		UserDao dao = new UserDao();
 		UserVo vo = dao.get(email, password);
+		
 		if (vo == null) {
 			/* 로그인 실패 */
 			WebUtil.redirect("/mysite/user?a=loginform&r=fail", request, response);
