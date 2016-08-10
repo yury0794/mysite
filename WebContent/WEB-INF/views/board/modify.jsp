@@ -8,13 +8,20 @@
 <title>mysite</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="/mysite/assets/css/board.css" rel="stylesheet" type="text/css">
+<c:if test='${"success"==param.res}'>
+	<script>	
+		alert("성공적으로 수행했습니다");
+	</script>
+</c:if>
 </head>
 <body>
 	<div id="container">
 		<c:import url='/WEB-INF/views/include/header.jsp'/>
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="modify">
+				<form class="board-form" method="post" action="/mysite/board">
+					<input type="hidden" name="a" value="modify">
+					<input type='hidden' name="no" value="${param.no}">
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글수정</th>

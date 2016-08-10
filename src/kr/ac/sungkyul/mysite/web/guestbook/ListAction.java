@@ -18,7 +18,7 @@ public class ListAction implements Action {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		GuestBookDao dao = new GuestBookDao();
 		List<GuestBookVo> list = dao.getList();
-
+		
 		// request 범위(scope)에 list 객체를 저장
 		request.setAttribute("list", list);
 

@@ -19,6 +19,10 @@ public class BoardActionFactory extends ActionFactory {
 			action = new ViewAction();
 		} else if ("modify".equals(actionName)) {
 			action = new ModifyAction();
+		} else if ("write".equals(actionName)) {
+			action = new WriteAction();
+		} else if ("delete".equals(actionName)) {
+			action = new DeleteAction();
 		}
 		
 		

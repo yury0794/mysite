@@ -19,9 +19,43 @@ public class ListAction implements Action {
 		BoardDao dao = new BoardDao();
 		List<BoardVo> list = dao.getList();
 
-		// request 범위(scope)에 list 객체를 저장
-		request.setAttribute("list", list);
+		String page = request.getParameter("page");
+
+		if (page == null || "".equals(page)) {
+			page = "1";
+		}
+
+		int row = 5;
+		list = dao.getList(Integer.parseInt(page), row);
 		
+		int pageGroup = 5;
+		int total=1;
+		int pageGroupTotal = 1;
+		int currentPage = Integer.parseInt(page);
+		
+		if(list.size()%row<list.size()/row){
+			total = list.size()/row + 1;
+		} else{
+			total = list.size()/row;
+		}
+		
+		if(total%pageGroup<total/pageGroup){
+			pageGroupTotal = total/pageGroup + 1;
+		} else{
+			pageGroupTotal = total/pageGroup;
+		}
+		
+		int beginPage = (pageGroupTotal-1)*pageGroup+1;
+		int endPage = pageGroupTotal*pageGroup;
+
+		// request 범위(scope)에 list 객체를 저장
+		request.setAttribute("pageGroupTotal", pageGroupTotal);
+		request.setAttribute("total", total);
+		request.setAttribute("currentPage", currentPage);		
+		request.setAttribute("beginPage", beginPage);
+		request.setAttribute("endPage", endPage);
+		request.setAttribute("list", list);
+
 		WebUtil.forward("/WEB-INF/views/board/list.jsp", request, response);
 	}
 }

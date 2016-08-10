@@ -31,7 +31,9 @@
 				</table>
 				<div class="bottom">
 					<a href="/mysite/board?a=list">글목록</a>
-					<a href="/mysite/board?a=modifyform&no=${boardVo.no}">글수정</a>
+					<c:if test='${boardVo.userNo == authUser.no}'>
+						<a href="/mysite/board?a=modifyform&no=${param.no}">글수정</a>
+					</c:if>
 				</div>
 
 			</div>
