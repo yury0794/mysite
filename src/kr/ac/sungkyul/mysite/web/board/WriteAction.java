@@ -33,15 +33,28 @@ public class WriteAction implements Action {
 		Long userNo = authUser.getNo();
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
-		
-		BoardVo vo = new BoardVo();
-		vo.setUserNo(userNo);
-		vo.setTitle(title);
-		vo.setContent(content);
-		
+		String pNo = request.getParameter("pNo");
+		String groupNo = request.getParameter("groupNo");
+		String depth = request.getParameter("depth");
+
 		BoardDao dao = new BoardDao();
-		dao.insert(vo);
-		
+		BoardVo vo;
+		if (pNo == null || "".equals(pNo)) {
+			vo = new BoardVo();
+			vo.setUserNo(userNo);
+			vo.setTitle(title);
+			vo.setContent(content);
+			dao.insert(vo);
+		} else {
+			vo = new BoardVo();
+			vo.setUserNo(userNo);
+			vo.setTitle(title);
+			vo.setContent(content);
+			vo.setGroupNo(Long.parseLong(groupNo));
+			vo.setDepth(Long.parseLong(depth));
+			dao.replyInsert(vo);
+		}
+
 		WebUtil.redirect("/mysite/board?a=list", request, response);
 	}
 }

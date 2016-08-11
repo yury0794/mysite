@@ -16,6 +16,9 @@
 			<div id="board">
 				<form class="board-form" method="post" action="/mysite/board">
 					<input type="hidden" name="a" value="write">
+					<input type="hidden" name="pNo" value="${param.pNo}">
+					<input type="hidden" name="groupNo" value="${replyVo.groupNo}">
+					<input type="hidden" name="depth" value="${replyVo.depth+1}">
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글쓰기</th>

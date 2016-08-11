@@ -23,8 +23,9 @@ public class BoardActionFactory extends ActionFactory {
 			action = new WriteAction();
 		} else if ("delete".equals(actionName)) {
 			action = new DeleteAction();
-		}
-		
+		} else if ("replyWriteform".equals(actionName)) {
+			action = new replyWriteFormAction();
+		}		
 		
 		else {
 			action = new ListAction();

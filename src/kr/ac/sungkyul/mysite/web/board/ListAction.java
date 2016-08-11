@@ -16,45 +16,56 @@ public class ListAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		BoardDao dao = new BoardDao();
-		List<BoardVo> list = dao.getList();
-
 		String page = request.getParameter("page");
-
+		String keyword = request.getParameter("keyword");
+		
 		if (page == null || "".equals(page)) {
 			page = "1";
 		}
-
+		
+		BoardDao dao = new BoardDao();		
+		List<BoardVo> list = null;
+		int count = 0;
 		int row = 5;
-		list = dao.getList(Integer.parseInt(page), row);
 		
-		int pageGroup = 5;
-		int total=1;
-		int pageGroupTotal = 1;
+		count = dao.getList(keyword);
+		list = dao.getList(Integer.parseInt(page), row, keyword);
+		
+		int totalPage = 1;
 		int currentPage = Integer.parseInt(page);
+
+		if (count % row != 0) {
+			totalPage = count / row + 1;
+		} else {
+			totalPage = count / row;
+		}
+
+		int pageGroupNum = 1;
+		int pageGroup = 5;
+		int beginPage = 1;
+		int endPage = 1;
 		
-		if(list.size()%row<list.size()/row){
-			total = list.size()/row + 1;
-		} else{
-			total = list.size()/row;
+		pageGroupNum = (int) Math.ceil((double)currentPage/pageGroup);
+		
+		if(pageGroupNum<1){
+			pageGroupNum = pageGroupNum+1;
 		}
 		
-		if(total%pageGroup<total/pageGroup){
-			pageGroupTotal = total/pageGroup + 1;
-		} else{
-			pageGroupTotal = total/pageGroup;
-		}
+		beginPage = (pageGroupNum - 1) * pageGroup + 1;
+		endPage = pageGroupNum * pageGroup;
 		
-		int beginPage = (pageGroupTotal-1)*pageGroup+1;
-		int endPage = pageGroupTotal*pageGroup;
+		if (totalPage < endPage) {
+			endPage = totalPage;
+		}
 
 		// request 범위(scope)에 list 객체를 저장
-		request.setAttribute("pageGroupTotal", pageGroupTotal);
-		request.setAttribute("total", total);
-		request.setAttribute("currentPage", currentPage);		
+		request.setAttribute("totalPage", totalPage);
+		request.setAttribute("currentPage", currentPage);
 		request.setAttribute("beginPage", beginPage);
 		request.setAttribute("endPage", endPage);
 		request.setAttribute("list", list);
+		request.setAttribute("keyword", keyword);
+		
 
 		WebUtil.forward("/WEB-INF/views/board/list.jsp", request, response);
 	}

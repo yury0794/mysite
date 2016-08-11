@@ -11,19 +11,18 @@ import kr.ac.sungkyul.mysite.vo.BoardVo;
 import kr.ac.sungkyul.web.Action;
 import kr.ac.sungkyul.web.WebUtil;
 
-public class ViewAction implements Action {
+public class replyWriteFormAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String no = request.getParameter("no");
-
+		String pNo = request.getParameter("pNo");
+		
 		BoardDao dao = new BoardDao();
 		BoardVo vo = new BoardVo();
-		vo = dao.get(Long.parseLong(no));
-		dao.updateCount(Long.parseLong(no));
+		vo = dao.get(Long.parseLong(pNo));
 		
-		request.setAttribute("boardVo", vo);
+		request.setAttribute("replyVo", vo);
 		
-		WebUtil.forward("/WEB-INF/views/board/view.jsp", request, response);
+		WebUtil.forward("/WEB-INF/views/board/write.jsp", request, response);
 	}
 }

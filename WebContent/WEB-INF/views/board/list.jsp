@@ -17,8 +17,8 @@
 		<c:import url='/WEB-INF/views/include/header.jsp'/>
 		<div id="content">
 			<div id="board">
-				<form id="search_form" action="" method="post">
-					<input type="text" id="kwd" name="kwd" value="">
+				<form id="search_form" action="" method="get">
+					<input type="text" id="keyword" name="keyword" value="${keyword}">
 					<input type="submit" value="찾기">
 				</form>
 				<form method="post" action="/mysite/board">
@@ -35,7 +35,12 @@
 						<c:forEach var='vo' items='${list}' varStatus='s'>
 						<tr>
 							<td>${countList-s.index}</td>
-							<td><a href="/mysite/board?a=view&no=${vo.no}">${vo.title}</a></td>
+							<td style="text-align:left;padding-left:${(vo.depth-1)*10}px">
+                  				<c:if test='${vo.depth>1 }'>
+                     				<img src="/mysite/assets/images/re.gif">
+                 				</c:if>
+								<a href="/mysite/board?a=view&no=${vo.no}">${vo.title}</a>							
+							</td>
 							<td>${vo.name}</td>
 							<td>${vo.viewCount}</td>
 							<td>${vo.regDate}</td>
@@ -60,21 +65,24 @@
 				</form>
 				<!-- begin:paging -->
             	<div class="pager">
-            	${pageGroupTotal}${total}
             	<br>
                		<ul>
-                  		<li><a href="/mysite/board?a=list&page=${beginPage-1}">◀</a></li>                  
-                  		<c:forEach begin='1' end='${endPage}' step='1' var='i'>
+               			<c:if test='${beginPage>1}'>
+               				<li><a href="/mysite/board?a=list&page=${beginPage-1}">◀</a></li>
+               			</c:if>
+                  		<c:forEach begin='${beginPage}' end='${endPage}' step='1' var='i'>
                   			<c:choose>
                   				<c:when test='${currentPage == i}'>
                   					<li class="selected">${i}</li>
                   				</c:when>
                   				<c:otherwise>
-                  					<li><a href="/mysite/board?a=list&page=${i}">${i}</a></li>
+                  					<li><a href="/mysite/board?a=list&page=${i}&kwd=${keyword}">${i}</a></li>
                   				</c:otherwise>
                   			</c:choose>
                   		</c:forEach>
-                  			<li><a href="/mysite/board?a=list&page=${endPage+1}">▶</a></li>                  		
+                  			<c:if test='${endPage<totalPage}'>
+                  				<li><a href="/mysite/board?a=list&page=${endPage+1}">▶</a></li>
+                  			</c:if>               		
                		</ul>
             	</div>
             	<!-- end:paging -->

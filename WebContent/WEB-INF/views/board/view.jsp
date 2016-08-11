@@ -34,6 +34,9 @@
 					<c:if test='${boardVo.userNo == authUser.no}'>
 						<a href="/mysite/board?a=modifyform&no=${param.no}">글수정</a>
 					</c:if>
+					<c:if test = '${not empty sessionScope.authUser}'>
+						<a href="/mysite/board?a=replyWriteform&pNo=${param.no}">댓글달기</a>
+					</c:if>
 				</div>
 
 			</div>
