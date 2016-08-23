@@ -2,9 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
-<%
-	String result = request.getParameter("r");
-%>
 <!doctype html>
 <html>
 <head>
