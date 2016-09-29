@@ -274,7 +274,7 @@ public class BoardDao {
 				pstmt.setInt(2, row);
 				pstmt.setInt(3, page);
 				pstmt.setInt(4, row);
-				
+
 			} else {
 				sql = "select no, title, name, view_count, " + "to_char(reg_date, 'yyyy-mm-dd pm hh:mi:ss'), depth, "
 						+ "user_no, rn from (select c.*, rownum as rn "
@@ -289,7 +289,7 @@ public class BoardDao {
 				pstmt.setInt(5, page);
 				pstmt.setInt(6, row);
 			}
-			
+
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -349,7 +349,8 @@ public class BoardDao {
 				sql = "select count(*) from board";
 				pstmt = conn.prepareStatement(sql);
 			} else {
-				sql = "select count(*) from board where title like ? " + "or content like ?";
+				sql = "select count(*) from board where title like ? "
+						+ "or content like ?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, "%" + keyword + "%");
 				pstmt.setString(2, "%" + keyword + "%");

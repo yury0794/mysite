@@ -76,7 +76,7 @@
                   					<li class="selected">${i}</li>
                   				</c:when>
                   				<c:otherwise>
-                  					<li><a href="/mysite/board?a=list&page=${i}&kwd=${keyword}">${i}</a></li>
+                  					<li><a href="/mysite/board?a=list&page=${i}&keyword=${keyword}">${i}</a></li>
                   				</c:otherwise>
                   			</c:choose>
                   		</c:forEach>
